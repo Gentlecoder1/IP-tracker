@@ -44,5 +44,38 @@ setTimeout(() => map.invalidateSize(), 200);
 //  TODO: YOUR CORE FUNCTIONALITY GOES BELOW
 // =========================================
 
-const apikey = "at_ItmlV6nok7Dmq65ETScPBUha4QQt1&ipAddress=8.8.8.8";
+const apikey = "at_ItmlV6nok7Dmq65ETScPBUha4QQt1";
 const apiUrl = `https://geo.ipify.org/api/v2/country,city?apiKey=${apikey}`;
+
+const searchInput = document.getElementById("search-input");
+const searchForm = document.getElementById("search-form");
+const ipValue = document.getElementById("ip-value");
+const locationValue = document.getElementById("location-value");
+const timezoneValue = document.getElementById("timezone-value");
+const ispValue = document.getElementById("isp-value");
+
+const getIPData = async (queryValue) => {
+  try {
+    const response = await fetch(
+      `${apiUrl}&ipAddress=${queryValue}&domain=${queryValue}`,
+    );
+    if (!response.ok) {
+      throw new Error("Data not found");
+    }
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+searchForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const value = searchInput.value;
+  getIPData(value);
+
+  console.log(value);
+});
+
