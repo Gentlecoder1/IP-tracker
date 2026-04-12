@@ -15,6 +15,9 @@ window.addEventListener("resize", updateHeaderBg);
 // =========================================
 //  UI: LEAFLET MAP INITIALIZATION
 // =========================================
+
+let currentMaker = nulll;
+
 const map = L.map("map", {
   zoomControl: true,
   scrollWheelZoom: true,
@@ -70,12 +73,32 @@ const getIPData = async (queryValue) => {
   }
 };
 
-searchForm.addEventListener("submit", (e) => {
+searchForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const value = searchInput.value;
-  getIPData(value);
 
-  console.log(value);
+  const data = await getIPData(value);
+  console.log(data);
+
+  updateUI(data);
 });
+
+const updateUI = (data) => {
+  ipValue.innerHTML = data.ip;
+  locationValue.innerHTML = `${data.location.city}, ${data.location.region} ${data.location.postalCode}`;
+  timezoneValue.innerHTML = data.location.timezone;
+  ispValue.innerHTML = data.isp;
+
+  //cordinate from location
+  const { lat, lng } = data.location;
+  map.flyTo([lat, lng], 14);
+
+  //to remove previous maker
+  if (currentMarker) map.removeLayer(currentMaker);
+
+  currentMaker = L.maker([lat, lng], { icon: locationIcon }).addTo(map);
+};
+
+
 
