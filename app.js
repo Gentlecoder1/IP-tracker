@@ -16,7 +16,7 @@ window.addEventListener("resize", updateHeaderBg);
 //  UI: LEAFLET MAP INITIALIZATION
 // =========================================
 
-let currentMaker = nulll;
+let currentMarker = null;
 
 const map = L.map("map", {
   zoomControl: true,
@@ -95,9 +95,9 @@ const updateUI = (data) => {
   map.flyTo([lat, lng], 14);
 
   //to remove previous maker
-  if (currentMarker) map.removeLayer(currentMaker);
+  if (currentMarker) map.removeLayer(currentMarker);
 
-  currentMaker = L.maker([lat, lng], { icon: locationIcon }).addTo(map);
+  currentMarker = L.marker([lat, lng], { icon: locationIcon }).addTo(map);
 };
 
 
